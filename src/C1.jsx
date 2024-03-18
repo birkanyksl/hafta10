@@ -2,24 +2,51 @@ import { useEffect, useState } from "react";
 
 const C1 = () => {
   const [sayac, setSayac] = useState(0);
+  const [baglanti, setBaglanti] = useState(navigator.onLine);
+
   useEffect(() => {
-    const surekliIslem1 = setInterval(() => {
-      console.log("Interval çalıştı");
-    }, 2000);
+    function pencereDegisti(event) {
+      const yatayMi =
+        event.target.innerWidth / event.target.innerHeight > 1 ? true : false;
+      console.log(yatayMi ? "Yatay ekran" : "Dikey Ekran");
+    }
+
+    window.addEventListener("resize", pencereDegisti);
 
     return () => {
-      clearInterval(surekliIslem1);
-      console.log("interval temizlendi");
+      window.removeEventListener("resize", pencereDegisti);
+    };
+  }, []);
+
+  useEffect(() => {
+    const surekliIslem = setInterval(() => {
+      setBaglanti(navigator.onLine);
+    }, 1000);
+
+    return () => {
+      clearInterval(surekliIslem);
     };
   }, []);
 
   return (
-    <div className="p-3 m-3 bg-success-subtle">
-      C1 Komponenti
-      <button onClick={() => setSayac((eskiDeger) => eskiDeger + 1)}>
-        {sayac}
-      </button>
-    </div>
+    <>
+      <div className="p-3 m-3 bg-success-subtle">
+        C1 Komponenti...
+        <button
+          onClick={() => setSayac((eskiDeger) => eskiDeger + 1)}
+          className="btn btn-danger"
+        >
+          {sayac}
+        </button>
+      </div>
+      {!baglanti ? (
+        <div className="alert alert-danger p-3 position-fixed">
+          Bağlantı kesildi!
+        </div>
+      ) : (
+        ""
+      )}
+    </>
   );
 };
 
