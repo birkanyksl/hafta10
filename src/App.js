@@ -1,7 +1,11 @@
+import UlkeListe from "./UlkeListe";
+
 function App() {
   return (
     <>
-      <p>React App</p>
+      <div className="container my-3">
+        <UlkeListe />
+      </div>
     </>
   );
 }
